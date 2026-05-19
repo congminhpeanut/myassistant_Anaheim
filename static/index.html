@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0f172a">
+<title>Anaheim Travel Guide — ADLM 2026</title>
+<link rel="manifest" href="/static/manifest.json">
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--elev:#27354d;--accent:#0ea5e9;--accent2:#10b981;--text:#e2e8f0;--mute:#94a3b8;--border:#334155;--danger:#ef4444;--warning:#f59e0b}
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+body{background:var(--bg);color:var(--text);min-height:100dvh;display:flex;flex-direction:column}
+
+.header{background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);padding:18px 16px 14px;position:sticky;top:0;z-index:50;border-bottom:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.header-top{display:flex;justify-content:space-between;align-items:flex-start}
+.header h1{font-size:20px;font-weight:700;color:#fff;line-height:1.3;letter-spacing:-.3px}
+.header h1 span{display:block;font-size:13px;font-weight:400;color:#94a3b8;margin-top:4px;line-height:1.4}
+.lang-btn{background:rgba(255,255,255,.08);border:1px solid var(--border);border-radius:8px;color:#e2e8f0;font-size:12px;padding:6px 12px;cursor:pointer;white-space:nowrap}
+.lang-btn:active{background:rgba(255,255,255,.15)}
+
+.main{flex:1;overflow-y:auto;padding:12px 14px 90px}
+.page{display:none;animation:fadeIn .25s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px;position:relative}
+.card.priority-high{border-left:4px solid var(--accent)}
+.card.priority-med{border-left:4px solid var(--warning)}
+.card.priority-red{border-left:4px solid var(--danger)}
+.card h2{font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px;font-weight:600}
+.card h3{font-size:15px;font-weight:600;color:#fff;margin-bottom:8px;line-height:1.4}
+.card h4{font-size:14px;font-weight:500;color:#e2e8f0;margin:10px 0 4px}
+.card p{font-size:13px;color:#cbd5e1;line-height:1.65;margin-bottom:8px}
+.card p strong{color:#fff;font-weight:500}
+.card ul{padding-left:18px;margin:8px 0;font-size:13px;color:#cbd5e1;line-height:1.7}
+.card li{margin-bottom:4px}
+
+.tag{display:inline-flex;align-items:center;background:var(--elev);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-size:11px;color:#94a3b8;margin:0 4px 6px 0}
+.tag.highlight{border-color:var(--accent);color:var(--accent);background:rgba(14,165,233,.08)}
+.tag.green{border-color:var(--accent2);color:var(--accent2);background:rgba(16,185,129,.08)}
+.tag.red{border-color:var(--danger);color:var(--danger);background:rgba(239,68,68,.08)}
+.tag.orange{border-color:var(--warning);color:var(--warning);background:rgba(245,158,11,.08)}
+
+.badge{display:inline-block;background:var(--accent);color:#0f172a;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;margin-bottom:8px}
+
+.row{display:flex;gap:10px;margin-bottom:10px}
+.col{flex:1}
+
+.collapse-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding:10px 0;border-top:1px solid var(--border)}
+.collapse-header:first-child{border-top:none}
+.collapse-header h4{font-size:13px;color:#fff;font-weight:500}
+.collapse-body{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.collapse-body.open{max-height:2500px}
+.arrow{font-size:11px;color:#94a3b8;transition:transform .2s}
+.arrow.open{transform:rotate(180deg)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 16px;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;margin-top:10px;margin-right:6px}
+.btn-primary{background:var(--accent);color:#0f172a}
+.btn-accent{background:var(--accent2);color:#0f172a}
+.btn-outline{background:transparent;border:1px solid var(--border);color:#cbd5e1}
+.btn-sm{padding:7px 12px;font-size:12px}
+
+.map{border-radius:12px;overflow:hidden;background:var(--elev);border:1px solid var(--border);margin:10px 0}
+.map iframe{width:100%;height:220px;border:none;display:block}
+
+.list-item{padding:12px 0;border-bottom:1px solid var(--border)}
+.list-item:last-child{border-bottom:none}
+.list-item h4{font-size:13px;color:#fff;margin-bottom:4px;font-weight:500}
+.list-item p{font-size:12px;color:#94a3b8;margin-bottom:3px;line-height:1.5}
+.step-list{padding-left:20px;margin:8px 0}
+.step-list li{font-size:12px;color:#cbd5e1;line-height:1.7;margin-bottom:6px}
+.step-list li::marker{color:var(--accent)}
+
+.time-badge{background:rgba(245,158,11,.12);border:1px solid var(--warning);color:var(--warning);border-radius:6px;padding:3px 8px;font-size:11px;margin-right:6px}
+
+.tabs{position:fixed;bottom:0;left:0;right:0;background:rgba(15,23,42,.95);backdrop-filter:blur(12px);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:4px 0;z-index:50}
+.tab{flex:1;text-align:center;padding:6px 0;background:none;border:none;color:var(--mute);font-size:10px;cursor:pointer;transition:color .2s}
+.tab.active{color:var(--accent)}
+.tab svg{display:block;margin:0 auto 3px;width:22px;height:22px;fill:currentColor;opacity:.7;transition:opacity .2s}
+.tab.active svg{opacity:1}
+
+#loader{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:100;flex-direction:column}
+#loader .spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+#loader p{font-size:13px;color:var(--mute);margin-top:14px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.bilingual .vi-show,.bilingual .vi-show-inline{display:none}
+.bilingual.vietnamese .en-show{display:none !important}
+.bilingual.vietnamese .vi-show{display:block}
+.bilingual.vietnamese .vi-show-inline{display:inline !important}
+
+.hint{font-size:11px;color:#64748b;margin-top:4px}
+a.link{color:var(--accent);text-decoration:none;font-size:13px}
+a.link:hover{text-decoration:underline}
+
+/* ---------- CHATBOT ---------- */
+.chat-fab{position:fixed;bottom:76px;right:16px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#0284c7);color:#fff;border:none;box-shadow:0 4px 14px rgba(14,165,233,.45);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:60;font-size:24px;transition:transform .2s,box-shadow .2s}
+.chat-fab:active{transform:scale(.92)}
+.chat-fab .badge-new{position:absolute;top:-2px;right:-2px;background:var(--danger);color:#fff;font-size:10px;font-weight:700;padding:2px 6px;border-radius:10px;display:none}
+.chat-panel{position:fixed;bottom:0;left:0;right:0;background:var(--bg);border-top:1px solid var(--border);border-radius:20px 20px 0 0;z-index:70;display:none;flex-direction:column;height:70vh;max-height:600px;box-shadow:0 -8px 30px rgba(0,0,0,.5);animation:slideUp .3s ease}
+.chat-panel.open{display:flex}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.chat-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);background:linear-gradient(90deg,var(--elev),var(--card))}
+.chat-header h3{font-size:15px;color:#fff;font-weight:600}
+.chat-header .close-btn{background:none;border:none;color:#94a3b8;font-size:20px;cursor:pointer;padding:0 4px}
+.chat-messages{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.chat-bubble{max-width:85%;padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.6;word-wrap:break-word;animation:popIn .2s ease}
+.chat-bubble.user{align-self:flex-end;background:var(--accent);color:#0f172a;border-bottom-right-radius:4px}
+.chat-bubble.bot{align-self:flex-start;background:var(--elev);color:#e2e8f0;border:1px solid var(--border);border-bottom-left-radius:4px}
+.chat-bubble.bot a{color:var(--accent);text-decoration:underline}
+.chat-bubble.bot strong{color:#fff}
+@keyframes popIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+.chat-input-wrap{display:flex;align-items:center;gap:8px;padding:10px 14px 18px;border-top:1px solid var(--border);background:var(--card)}
+.chat-input-wrap input{flex:1;background:var(--elev);border:1px solid var(--border);border-radius:12px;padding:10px 14px;color:#fff;font-size:13px;outline:none}
+.chat-input-wrap input::placeholder{color:#64748b}
+.chat-input-wrap button{background:var(--accent);color:#0f172a;border:none;border-radius:10px;padding:9px 14px;font-size:13px;font-weight:600;cursor:pointer}
+.chat-input-wrap button:disabled{opacity:.5;cursor:not-allowed}
+.chat-quick{display:flex;gap:6px;padding:0 14px 10px;overflow-x:auto}
+.chat-quick button{white-space:nowrap;background:var(--elev);border:1px solid var(--border);border-radius:10px;padding:6px 12px;color:#cbd5e1;font-size:11px;cursor:pointer}
+.chat-quick button:active{background:rgba(255,255,255,.06)}
+.chat-status{font-size:11px;color:#64748b;padding:0 14px 6px}
+.chat-status.gps{color:var(--accent2)}
+.chat-status.gps-err{color:var(--danger)}
+
+/* Overlay backdrop */
+.chat-backdrop{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.45);z-index:65;display:none}
+.chat-backdrop.open{display:block}
+
+/* Lost button special */
+.lost-btn{background:linear-gradient(135deg,#ef4444,#b91c1c);color:#fff;border:none}
+</style>
+</head>
+<body class="bilingual" id="app">
+
+<div id="loader"><div class="spinner"></div><p class="en-show">Loading travel guide...</p><p class="vi-show">Đang tải hướng dẫn...</p></div>
+
+<header class="header">
+<div class="header-top">
+<div>
+<h1>
+Anaheim Travel Guide
+<span class="en-show">ADLM 2026 | Anaheim Convention Center | July 26-30</span>
+<span class="vi-show">ADLM 2026 | Trung tâm Hội nghị Anaheim | 26-30 tháng 7</span>
+</h1>
+</div>
+<button class="lang-btn" id="langToggle" onclick="toggleLang()">EN / VI</button>
+</div>
+</header>
+
+<main class="main" id="main">
+
+<!-- PAGE: Guide -->
+<div id="page-guide" class="page active"></div>
+
+<!-- PAGE: Plan -->
+<div id="page-plan" class="page"></div>
+
+<!-- PAGE: Maps -->
+<div id="page-maps" class="page"></div>
+
+<!-- PAGE: Food -->
+<div id="page-food" class="page"></div>
+
+<!-- PAGE: More -->
+<div id="page-more" class="page"></div>
+
+</main>
+
+<nav class="tabs">
+<button class="tab active" onclick="showPage('page-guide',this)">
+<svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+<span class="en-show">Guide</span><span class="vi-show">Hướng dẫn</span>
+</button>
+<button class="tab" onclick="showPage('page-plan',this)">
+<svg viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+<span class="en-show">Plan</span><span class="vi-show">Lịch trình</span>
+</button>
+<button class="tab" onclick="showPage('page-maps',this)">
+<svg viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+<span class="en-show">Maps</span><span class="vi-show">Bản đồ</span>
+</button>
+<button class="tab" onclick="showPage('page-food',this)">
+<svg viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+<span class="en-show">Food</span><span class="vi-show">Ăn uống</span>
+</button>
+<button class="tab" onclick="showPage('page-more',this)">
+<svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+<span class="en-show">More</span><span class="vi-show">Thêm</span>
+</button>
+</nav>
+
+<!-- CHATBOT -->
+<div class="chat-backdrop" id="chatBackdrop" onclick="toggleChat()"></div>
+<button class="chat-fab" id="chatFab" onclick="toggleChat()" aria-label="Open chat">
+&#9997;
+<span class="badge-new" id="chatBadge">1</span>
+</button>
+<div class="chat-panel" id="chatPanel">
+<div class="chat-header">
+<h3><span class="en-show">&#129302; Travel Assistant</span><span class="vi-show">&#129302; Trợ lý Du lịch</span></h3>
+<button class="close-btn" onclick="toggleChat()">&#10005;</button>
+</div>
+<div class="chat-messages" id="chatMessages"></div>
+<div class="chat-quick" id="chatQuick"></div>
+<div class="chat-status" id="chatStatus"></div>
+<div class="chat-input-wrap">
+<input type="text" id="chatInput" placeholder="Ask anything..." onkeydown="if(event.key==='Enter')sendChat()">
+<button id="chatSendBtn" onclick="sendChat()">Send</button>
+</div>
+</div>
+
+<script>
+let DATA = {};
+let LANG = 'en';
+let CHAT_HISTORY = [];
+let GPS_LAT = null;
+let GPS_LON = null;
+let GPS_ACCURACY = null;
+
+const UI = {
+  en: {
+    loading: "Loading travel guide...", openMaps: "Open in Google Maps", getDirections: "Get Directions",
+    arriveEarly: "Arrive early (6:15). Lines form fast.", bestFor: "Best for", fromSNA: "From SNA", fromLAX: "From LAX",
+    pros: "Pros", cons: "Cons", recommended: "Recommended", tips: "Tips", emergency: "EMERGENCY CALL",
+    call: "Call", morning: "Morning", afternoon: "Afternoon", evening: "Evening", budget: "Est. Budget",
+    perDay: "per day", forTwo: "for 2 people", viewMaps: "View on Maps", venue: "Venue", expo: "Expo",
+    poster: "Poster Location", dates: "Dates", address: "Address", phone: "Phone", distance: "Distance",
+    whyStay: "Why stay here", usefulLinks: "Useful Links", safetyTips: "Safety Tips", whatToDo: "Things to Do",
+    fullSchedule: "Full Schedule", arrivalTips: "Arrival Guide", transportOptions: "Transport Options",
+    whereToStay: "Where to Stay", keyEvents: "Key Events", cost: "Cost", steps: "Steps", openMixer: "Opening Mixer",
+    expoDays: "Expo Days", dayPlan: "Daily Plan", dayByDay: "Day-by-Day Itinerary", restaurants: "Restaurants",
+    activities: "Activities", littleSaigon: "Little Saigon", conventionFood: "Convention Center Food",
+    chatPlaceholder: "Ask anything about Anaheim...",
+    chatSend: "Send", chatLost: "I'm lost", chatHotel: "Hotel", chatFood: "Food near me",
+    chatAirport: "To airport", chatVenue: "To venue", chatEmergency: "Emergency",
+    gpsAcquiring: "Acquiring GPS...", gpsReady: "GPS ready", gpsError: "GPS unavailable",
+    typing: "Typing...", navTo: "Navigate to", openGoogleMaps: "Open Google Maps"
+  },
+  vi: {
+    loading: "Đang tải...", openMaps: "Mở trong Google Maps", getDirections: "Chỉ đường",
+    arriveEarly: "Đến sớm (6:15 giờ). Có đông người nhanh.", bestFor: "Phù hợp", fromSNA: "Từ SNA", fromLAX: "Từ LAX",
+    pros: "Ưu điểm", cons: "Nhược điểm", recommended: "Đề xuất", tips: "Lưu ý", emergency: "GỌI KHẨN CẤP",
+    call: "Gọi", morning: "Buổi sáng", afternoon: "Buổi chiều", evening: "Buổi tối", budget: "Ngân sách ước tính",
+    perDay: "mỗi ngày", forTwo: "cho 2 người", viewMaps: "Xem trên Bản đồ", venue: "Địa điểm", expo: "Triển lãm",
+    poster: "Vị trí Poster", dates: "Ngày", address: "Địa chỉ", phone: "Điện thoại", distance: "Khoảng cách",
+    whyStay: "Tại sao nên ở đây", usefulLinks: "Liên kết hữu ích", safetyTips: "Lưu ý an toàn", whatToDo: "Hoạt động",
+    fullSchedule: "Lịch toàn bộ", arrivalTips: "Hướng dẫn đến nơi", transportOptions: "Phương tiện di chuyển",
+    whereToStay: "Nơi ở", keyEvents: "Sự kiện chính", cost: "Chi phí", steps: "Các bước", openMixer: "Tiệc chào đón",
+    expoDays: "Ngày Triển lãm", dayPlan: "Lịch từng ngày", dayByDay: "Lịch trình chi tiết", restaurants: "Nhà hàng",
+    activities: "Nơi vui chơi", littleSaigon: "Little Saigon", conventionFood: "Ăn trong Trung tâm Hội nghị",
+    chatPlaceholder: "Hỏi bất cứ điều gì về Anaheim...",
+    chatSend: "Gửi", chatLost: "Tôi bị lạc", chatHotel: "Khách sạn", chatFood: "Ăn gần đây",
+    chatAirport: "Ra sân bay", chatVenue: "Đến hội nghị", chatEmergency: "Khẩn cấp",
+    gpsAcquiring: "Đang lấy GPS...", gpsReady: "GPS sẵn sàng", gpsError: "GPS không khả dụng",
+    typing: "Đang trả lời...", navTo: "Chỉ đường đến", openGoogleMaps: "Mở Google Maps"
+  }
+};
+
+function T(key){
+  if(key && typeof key === 'object' && key.en) { return key[LANG] || key.en; }
+  return (UI[LANG] && UI[LANG][key]) || key;
+}
+
+function toggleLang(){
+  LANG = LANG === 'en' ? 'vi' : 'en';
+  document.body.classList.toggle('vietnamese', LANG === 'vi');
+  localStorage.setItem('anaheim_lang', LANG);
+  renderAll();
+  updateChatUI();
+}
+
+async function loadAll(){
+  const stored = localStorage.getItem('anaheim_lang');
+  if(stored){ LANG = stored; document.body.classList.toggle('vietnamese', LANG==='vi'); }
+
+  const endpoints = ['overview','airport','transport','hotels','schedule','food','emergency','activities','daily-plan','links'];
+  for(const ep of endpoints){
+    try{ const r=await fetch('/api/'+ep); if(r.ok) DATA[ep] = await r.json(); }
+    catch(e){}
+  }
+  document.getElementById('loader').style.display='none';
+  renderAll();
+  initChat();
+  acquireGPS();
+}
+
+function renderAll(){ renderGuide(); renderPlan(); renderMaps(); renderFood(); renderMore(); }
+
+function showPage(id, btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+}
+
+function toggleCollapse(el){
+  const body = el.querySelector('.collapse-body');
+  const arrow = el.querySelector('.arrow');
+  const open = body.classList.toggle('open');
+  if(arrow) arrow.classList.toggle('open',open);
+}
+
+function linkMap(addr){ return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(addr); }
+function linkDir(dest){ return 'https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(dest); }
+
+/* ---------- GUIDE ---------- */
+function renderGuide(){
+  const o=DATA.overview||{};
+  const a=DATA.airport||{};
+  const h=DATA.hotels||[];
+  const e=DATA.emergency||{};
+  let html = '';
+
+  html += `
+    <div class="card">
+      <div class="badge">${T('recommended')}</div>
+      <h2>${T('venue')}</h2>
+      <h3>${T(o.event)}</h3>
+      <p><strong>${T('venue')}:</strong> ${T(o.venue)} &mdash; ${o.address}</p>
+      <p><strong>${T('dates')}:</strong> ${T(o.dates)} (${T('expo')}: ${T(o.expo_dates)})</p>
+      <p><strong>${T('poster')}:</strong> ${T(o.poster_location)}</p>
+      <div>
+        <span class="tag">${o.travelers} ${T('forTwo')}</span>
+        <span class="tag highlight">${T(o.budget_per_day)}</span>
+        <span class="tag green">${T(o.your_arrival)}</span>
+      </div>
+      <a class="btn btn-primary" href="${linkDir(o.address)}" target="_blank">${T('getDirections')}</a>
+    </div>
+  `;
+
+  const rec = a.recommended_airport || {};
+  const alt = a.alternative_airport || {};
+  html += `
+    <div class="card">
+      <h2>${T('arrivalTips')}</h2>
+      <div style="background:rgba(16,185,129,.1);border:1px solid var(--accent2);border-radius:10px;padding:12px;margin-bottom:12px">
+        <h3 style="color:var(--accent2)">${T(rec.name)} (${rec.code})</h3>
+        <p>${T(rec.drive_time)} &middot; ${T(rec.distance_to_venue)}</p>
+        <p>${T(rec.why)}</p>
+      </div>
+      <div style="background:var(--elev);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:12px">
+        <h3>${T(alt.name)} (${alt.code})</h3>
+        <p>${T(alt.drive_time)} &middot; ${T(alt.distance_to_venue)}</p>
+        <p>${T(alt.why)}</p>
+      </div>
+      ${a.arrival_tips ? `
+        <div class="collapse" onclick="toggleCollapse(this)">
+          <div class="collapse-header"><h4>${T('tips')}</h4><span class="arrow">&#9660;</span></div>
+          <div class="collapse-body"><ul>${a.arrival_tips.map(t=>'<li>'+T(t)+'</li>').join('')}</ul></div>
+        </div>
+      ` : ''}
+      ${a.ground_transport ? `
+        <div class="collapse" onclick="toggleCollapse(this)">
+          <div class="collapse-header"><h4>Pickup Zones</h4><span class="arrow">&#9660;</span></div>
+          <div class="collapse-body">
+            <p><strong>SNA:</strong> ${T(a.ground_transport.sna)}</p>
+            <p><strong>LAX:</strong> ${T(a.ground_transport.lax)}</p>
+          </div>
+        </div>
+      ` : ''}
+    </div>
+  `;
+
+  html += `<div class="card"><h2>${T('transportOptions')}</h2>`;
+  (DATA.transport||[]).forEach(opt=>{
+    html += `
+      <div class="collapse" onclick="toggleCollapse(this)">
+        <div class="collapse-header"><h4>${T(opt.mode)}</h4><span class="arrow">&#9660;</span></div>
+        <div class="collapse-body">
+          <p><strong>${T('fromSNA')}:</strong> ${T(opt.from_sna)}</p>
+          <p><strong>${T('fromLAX')}:</strong> ${T(opt.from_lax)}</p>
+          <p><span class="tag green">${T('pros')}</span> ${T(opt.pros)}</p>
+          <p><span class="tag red">${T('cons')}</span> ${T(opt.cons)}</p>
+          ${opt.recommended ? `<p><span class="tag highlight">${T('recommended')}</span> ${T(opt.recommended)}</p>` : ''}
+          ${opt.steps ? `<div style="margin-top:10px"><strong style="font-size:12px;color:#94a3b8">${T('steps')}:</strong>
+            <ol class="step-list">${opt.steps.map(s=>'<li>'+T(s)+'</li>').join('')}</ol></div>` : ''}
+        </div>
+      </div>
+    `;
+  });
+  html += '</div>';
+
+  html += `<div class="card"><h2>${T('whereToStay')}</h2>`;
+  h.forEach(hotel=>{
+    html += `
+      <div class="list-item">
+        <h4>${T(hotel.name)}</h4>
+        <p>${T(hotel.distance)} &middot; ${T(hotel.price)}</p>
+        <p>${T(hotel.why)}</p>
+        <a class="btn btn-sm btn-primary" href="${linkMap(hotel.address)}" target="_blank">${T('viewMaps')}</a>
+      </div>
+    `;
+  });
+  html += '</div>';
+
+  html += `
+    <div class="card priority-red">
+      <h2>${T('emergency')}</h2>
+      <h3 style="color:var(--danger);font-size:22px;margin:8px 0">&#9888; 911</h3>
+      <p>${T('call')} Police / Ambulance / Fire</p>
+      ${e.vietnam_consulate ? `
+        <div class="list-item" style="margin-top:12px">
+          <h4>${T('call')} ${e.vietnam_consulate.phone}</h4>
+          <p>${T('venue')} Vietnam Consulate &mdash; ${e.vietnam_consulate.address}</p>
+          <a class="btn btn-sm btn-primary" href="tel:${e.vietnam_consulate.phone.replace(/[^+0-9]/g,'')}">${T('call')} ${e.vietnam_consulate.phone}</a>
+        </div>
+      ` : ''}
+      ${e.hospitals ? e.hospitals.map(hos=>`
+        <div class="list-item">
+          <h4>${hos.name} &mdash; ${hos.phone}</h4>
+          <p>${T(hos.distance)} &middot; ${T(hos.note)}</p>
+        </div>
+      `).join('') : ''}
+      ${e.tips ? `
+        <div class="collapse" onclick="toggleCollapse(this)" style="margin-top:12px">
+          <div class="collapse-header"><h4>${T('safetyTips')}</h4><span class="arrow">&#9660;</span></div>
+          <div class="collapse-body"><ul>${e.tips.map(t=>'<li>'+T(t)+'</li>').join('')}</ul></div>
+        </div>
+      ` : ''}
+    </div>
+  `;
+
+  document.getElementById('page-guide').innerHTML = html;
+}
+
+/* ---------- PLAN ---------- */
+function renderPlan(){
+  const plan=DATA['daily-plan']||[];
+  const s=DATA.schedule||{};
+  let html='';
+
+  if(s.opening_mixer){
+    html += `
+      <div class="card priority-high">
+        <h2>${T('openMixer')}</h2>
+        <p><span class="time-badge">${s.opening_mixer.time}</span> ${T(s.opening_mixer.date)}</p>
+        <p>${T(s.opening_mixer.location)}</p>
+        <p>${T(s.opening_mixer.what)}</p>
+        <p class="hint">&#128161; ${T(s.opening_mixer.tip)}</p>
+      </div>
+    `;
+  }
+  if(s.expo_days){
+    html += `
+      <div class="card priority-med">
+        <h2>${T('expoDays')}</h2>
+        <p>${T(s.expo_days.dates)} &middot; ${s.expo_days.hours}</p>
+        <p>${T(s.expo_days.location)}</p>
+        <p>${T(s.expo_days.what)}</p>
+      </div>
+    `;
+  }
+
+  plan.forEach(day=>{
+    const isRed = day.priority==='high' && (T(day.title)).toLowerCase().indexOf('poster')>=0;
+    html += `
+      <div class="card ${isRed?'priority-red':(day.priority==='high'?'priority-high':(day.priority==='medium'?'priority-med':''))}">
+        <h2>${T(day.day)}</h2>
+        <h3>${T(day.title)}</h3>
+        <p><strong style="color:var(--accent)">${T('morning')}:</strong> ${T(day.morning)}</p>
+        <p><strong style="color:var(--warning)">${T('afternoon')}:</strong> ${T(day.afternoon)}</p>
+        <p><strong style="color:#a78bfa">${T('evening')}:</strong> ${T(day.evening)}</p>
+        <div><span class="tag ${isRed?'red':(day.priority==='high'?'highlight':'green')}">${T('budget')}: ~${day.budget}</span></div>
+      </div>
+    `;
+  });
+
+  document.getElementById('page-plan').innerHTML = html;
+}
+
+/* ---------- MAPS ---------- */
+function renderMaps(){
+  const dest='800 W Katella Ave, Anaheim, CA';
+  const sna='John Wayne Airport, Santa Ana, CA';
+  const lax='Los Angeles International Airport, CA';
+  const embed=(q,z=14)=>'https://www.google.com/maps?q='+encodeURIComponent(q)+'&z='+z+'&output=embed';
+
+  document.getElementById('page-maps').innerHTML = `
+    <div class="card">
+      <h2>&#127970; Anaheim Convention Center</h2>
+      <div class="map"><iframe src="${embed(dest,16)}" loading="lazy"></iframe></div>
+      <a class="btn btn-primary btn-sm" href="${linkDir(dest)}" target="_blank">${T('getDirections')}</a>
+    </div>
+    <div class="card">
+      <h2>&#9992; SNA Airport (${T('recommended')})</h2>
+      <div class="map"><iframe src="${embed(sna,13)}" loading="lazy"></iframe></div>
+      <a class="btn btn-primary btn-sm" href="${linkDir(sna)}" target="_blank">${T('getDirections')}</a>
+    </div>
+    <div class="card">
+      <h2>&#9992; LAX Airport (Alternative)</h2>
+      <div class="map"><iframe src="${embed(lax,12)}" loading="lazy"></iframe></div>
+      <a class="btn btn-sm btn-outline" href="${linkDir(lax)}" target="_blank">${T('getDirections')}</a>
+    </div>
+  `;
+}
+
+/* ---------- FOOD ---------- */
+function renderFood(){
+  const food=DATA.food||[];
+  let html='';
+  food.forEach(item=>{
+    html += `
+      <div class="card">
+        <h2>${T(item.name)}</h2>
+        <p>&#128205; ${T(item.distance)} &middot; ${T(item.price)}</p>
+        <p>${T(item.what)}</p>
+        ${item.tip ? `<p><span class="tag orange">Tip</span> ${T(item.tip)}</p>` : ''}
+        <a class="btn btn-sm btn-primary" href="${linkMap(item.address)}" target="_blank">${T('viewMaps')}</a>
+      </div>
+    `;
+  });
+  document.getElementById('page-food').innerHTML = html;
+}
+
+/* ---------- MORE ---------- */
+function renderMore(){
+  const acts=DATA.activities||[];
+  const s=DATA.schedule||{};
+  const links=DATA.links||{};
+  let html='';
+
+  html += '<div class="card"><h2>'+T('whatToDo')+'</h2>';
+  acts.forEach(a=>{
+    html += `
+      <div class="list-item">
+        <h4>${T(a.name)}</h4>
+        <p>&#128205; ${T(a.distance)} &middot; ${T(a.cost)}</p>
+        <p>${T(a.what)}</p>
+      </div>
+    `;
+  });
+  html += '</div>';
+
+  if(s.days){
+    html += '<div class="card"><h2>'+T('fullSchedule')+'</h2><div class="collapse-body open" style="max-height:none">';
+    s.days.forEach(d=>{
+      html += `<p><strong>${T(d.day)}:</strong> ${T(d.events)}</p>`;
+    });
+    html += '</div></div>';
+  }
+
+  html += `
+    <div class="card">
+      <h2>${T('usefulLinks')}</h2>
+      <div class="list-item"><h4>ADLM Official</h4><p><a class="link" href="${links.adlm||'https://myadlm.org'}" target="_blank">myadlm.org</a></p></div>
+      <div class="list-item"><h4>Anaheim Convention Center</h4><p><a class="link" href="${links.venue||'https://www.anaheimconventioncenter.com'}" target="_blank">anaheimconventioncenter.com</a></p></div>
+      <div class="list-item"><h4>FlyAway Bus (LAX)</h4><p><a class="link" href="${links.flyaway||'https://www.flylax.com/flyaway-bus'}" target="_blank">flylax.com/flyaway-bus</a></p></div>
+      <div class="list-item"><h4>Prime Time Shuttle</h4><p><a class="link" href="${links.primetime||'https://primetimeshuttle.com'}" target="_blank">primetimeshuttle.com</a></p></div>
+      <div class="list-item"><h4>ESTA (Visa Waiver)</h4><p><a class="link" href="${links.esta||'https://esta.cbp.dhs.gov'}" target="_blank">esta.cbp.dhs.gov</a></p></div>
+    </div>
+  `;
+
+  document.getElementById('page-more').innerHTML = html;
+}
+
+/* ---------- CHATBOT ---------- */
+function renderMarkdown(text){
+  let h = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  h = h.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  h = h.replace(/^### (.*$)/gim, '<h3>$1</h3>');
+  h = h.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+  h = h.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+  h = h.replace(/^\s*[-\*]\s+(.*$)/gim, '<li>$1</li>');
+  h = h.replace(/\n/g, '<br>');
+  return h;
+}
+
+function initChat(){
+  const quick = [
+    {key:'chatLost', fn:'handleLost()', cls:'lost-btn'},
+    {key:'chatVenue', fn:"quickNavigate('convention center')"},
+    {key:'chatHotel', fn:"quickAsk('Khách sạn nào gần trung tâm hội nghị nhất?')"},
+    {key:'chatFood', fn:"quickAsk('Ăn gì gần trung tâm hội nghị dưới $15?')"},
+    {key:'chatAirport', fn:"quickNavigate('SNA')"},
+    {key:'chatEmergency', fn:"quickAsk('Số điện thoại khẩn cấp và bệnh viện gần nhất?')"},
+  ];
+  const quickEl = document.getElementById('chatQuick');
+  quickEl.innerHTML = quick.map(q=>`<button class="${q.cls||''}" onclick="${q.fn}">${T(q.key)}</button>`).join('');
+  updateChatUI();
+  // Welcome message (always Vietnamese)
+  addBotMessage("Xin chào! Tôi là trợ lý du lịch Anaheim. Hỏi tôi bất cứ điều gì — địa điểm, chỉ đường, khẩn cấp, hoặc nhấn <b>Tôi bị lạc</b> để tôi chỉ bạn đường về.");
+}
+
+function updateChatUI(){
+  document.getElementById('chatInput').placeholder = T('chatPlaceholder');
+  document.getElementById('chatSendBtn').textContent = T('chatSend');
+  const quick = document.getElementById('chatQuick');
+  if(quick){
+    const btns = quick.querySelectorAll('button');
+    const keys = ['chatLost','chatVenue','chatHotel','chatFood','chatAirport','chatEmergency'];
+    btns.forEach((b,i)=>{ if(keys[i]) b.textContent = T(keys[i]); });
+  }
+}
+
+function toggleChat(){
+  const panel = document.getElementById('chatPanel');
+  const back = document.getElementById('chatBackdrop');
+  const fab = document.getElementById('chatFab');
+  const open = !panel.classList.contains('open');
+  panel.classList.toggle('open', open);
+  back.classList.toggle('open', open);
+  fab.style.display = open ? 'none' : 'flex';
+  if(open) setTimeout(()=>document.getElementById('chatInput').focus(), 100);
+}
+
+function addUserMessage(text){
+  const box = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'chat-bubble user';
+  div.textContent = text;
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
+}
+
+function addBotMessage(html, actions){
+  const box = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'chat-bubble bot';
+  div.innerHTML = html;
+  if(actions){
+    const actDiv = document.createElement('div');
+    actDiv.style.marginTop='8px';
+    actions.forEach(a=>{
+      const btn = document.createElement('button');
+      btn.className='btn btn-sm btn-primary';
+      btn.style.marginTop='4px';
+      btn.textContent = a.text;
+      btn.onclick = a.fn;
+      actDiv.appendChild(btn);
+    });
+    div.appendChild(actDiv);
+  }
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
+  return div;
+}
+
+function setTyping(status){
+  const el = document.getElementById('chatStatus');
+  el.textContent = status ? T('typing') : '';
+  document.getElementById('chatSendBtn').disabled = status;
+}
+
+function setGPSStatus(text, isError){
+  const el = document.getElementById('chatStatus');
+  el.textContent = text;
+  el.className = 'chat-status ' + (isError ? 'gps-err' : 'gps');
+}
+
+function acquireGPS(){
+  setGPSStatus(T('gpsAcquiring'));
+  if(!navigator.geolocation){
+    setGPSStatus(T('gpsError'), true);
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(
+    pos=>{
+      GPS_LAT = pos.coords.latitude;
+      GPS_LON = pos.coords.longitude;
+      GPS_ACCURACY = pos.coords.accuracy;
+      setGPSStatus(`${T('gpsReady')} (±${Math.round(GPS_ACCURACY)}m)`);
+    },
+    err=>{
+      setGPSStatus(T('gpsError'), true);
+      console.error('GPS error', err);
+    },
+    {enableHighAccuracy:true, timeout:15000, maximumAge:30000}
+  );
+  // Keep watching for real-time updates
+  navigator.geolocation.watchPosition(
+    pos=>{
+      GPS_LAT = pos.coords.latitude;
+      GPS_LON = pos.coords.longitude;
+      GPS_ACCURACY = pos.coords.accuracy;
+      setGPSStatus(`${T('gpsReady')} (±${Math.round(GPS_ACCURACY)}m)`);
+    },
+    ()=>{},
+    {enableHighAccuracy:true, maximumAge:10000}
+  );
+}
+
+async function sendChat(){
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if(!text) return;
+  input.value = '';
+  addUserMessage(text);
+  CHAT_HISTORY.push({role:'user', content:text});
+  setTyping(true);
+  
+  const box = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'chat-bubble bot';
+  div.textContent = '';
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
+  
+  let fullReply = '';
+  let buffer = '';
+  
+  try{
+    const r = await fetch('/api/chat/stream', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({message:text, history:CHAT_HISTORY.slice(-6)})
+    });
+    const reader = r.body.getReader();
+    const decoder = new TextDecoder();
+    
+    while(true){
+      const {done, value} = await reader.read();
+      if(done) break;
+      buffer += decoder.decode(value, {stream:true});
+      let nl;
+      while((nl = buffer.indexOf('\n')) >= 0){
+        const line = buffer.slice(0, nl).trim();
+        buffer = buffer.slice(nl + 1);
+        if(!line) continue;
+        try{
+          const parsed = JSON.parse(line);
+          if(parsed.token){
+            fullReply += parsed.token;
+            div.textContent = fullReply;
+            box.scrollTop = box.scrollHeight;
+          }
+        }catch(e){}
+      }
+    }
+    // Final markdown render
+    div.innerHTML = renderMarkdown(fullReply);
+    CHAT_HISTORY.push({role:'assistant', content:fullReply});
+  }catch(e){
+    div.innerHTML = LANG==='vi'?"Lỗi kết nối. Vui lòng thử lại.":"Connection error. Please try again.";
+  }
+  setTyping(false);
+}
+
+function quickAsk(text){
+  document.getElementById('chatInput').value = text;
+  sendChat();
+}
+
+function normalizeDest(raw){
+  const lower = raw.toLowerCase().trim();
+  const map = {
+    'khach san':'hilton anaheim','hotel':'hilton anaheim','nha nghi':'hilton anaheim',
+    'hoi nghi':'anaheim convention center','convention center':'anaheim convention center',
+    'trung tam hoi nghi':'anaheim convention center',
+    'san bay':'john wayne airport','airport':'john wayne airport','sna':'sna',
+    'benh vien':'st joseph hospital','hospital':'st joseph hospital','cap cuu':'uc irvine medical center',
+    'nha thuoc':'cvs pharmacy','pharmacy':'cvs pharmacy','cvs':'cvs pharmacy',
+    'disney':'disneyland','cong vien':'disneyland',
+    'an uong':'anaheim packing district','packing district':'anaheim packing district',
+    'pho 79':'pho 79','pho':'pho 79','little saigon':'little saigon',
+    'bai bien':'newport beach','beach':'newport beach','newport':'newport beach',
+    'downtown disney':'downtown disney','marriott':'anaheim marriott','hilton':'hilton anaheim'
+  };
+  // Exact match first
+  if(map[lower]) return map[lower];
+  // Partial fuzzy match
+  for(const [vi,en] of Object.entries(map)){
+    if(lower.includes(vi)) return en;
+  }
+  return raw;
+}
+
+function handleLost(){
+  const rawDest = prompt(LANG==='vi'?"Bạn muốn đến đâu? (ví dụ: khách sạn, sân bay, hội nghị)":"Where do you want to go? (e.g. hotel, airport, convention)");
+  if(!rawDest) return;
+  const dest = normalizeDest(rawDest);
+  addUserMessage(`${T('chatLost')} → ${rawDest}`);
+
+  // If no GPS, fall back to chat
+  if(!GPS_LAT || !GPS_LON){
+    setTyping(true);
+    fetch('/api/chat/stream', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({message:`Tôi muốn đến ${rawDest}. Chỉ đường cho tôi, và cho tôi biết địa chỉ cụ thể.`, history:CHAT_HISTORY.slice(-6)})
+    })
+    .then(r=>{
+      const reader = r.body.getReader();
+      const decoder = new TextDecoder();
+      const box = document.getElementById('chatMessages');
+      const div = document.createElement('div');
+      div.className = 'chat-bubble bot';
+      div.textContent = '';
+      box.appendChild(div);
+      box.scrollTop = box.scrollHeight;
+      let buf = '';
+      function readChunk(){
+        reader.read().then(({done,value})=>{
+          if(done){ setTyping(false); return; }
+          buf += decoder.decode(value, {stream:true});
+          let nl;
+          while((nl=buf.indexOf('\n'))>=0){
+            const line = buf.slice(0, nl).trim();
+            buf = buf.slice(nl+1);
+            if(!line) continue;
+            try{
+              const parsed = JSON.parse(line);
+              if(parsed.token){ div.textContent += parsed.token; box.scrollTop = box.scrollHeight; }
+            }catch(e){}
+          }
+          readChunk();
+        });
+      }
+      readChunk();
+    })
+    .catch(e=>{
+      addBotMessage(LANG==='vi'?"Lỗi kết nối. Vui lòng thử lại.":"Connection error. Please try again.");
+      setTyping(false);
+    });
+    return;
+  }
+
+  setTyping(true);
+  fetch('/api/navigate', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({lat:GPS_LAT, lon:GPS_LON, destination:dest, lang:LANG})
+  })
+  .then(r=>r.json())
+  .then(data=>{
+    if(data.error && data.error.indexOf('Could not find destination')>=0){
+      addBotMessage(`<b>${T('navTo')} ${rawDest}</b><br><small>${LANG==='vi'?'Không tìm thấy địa điểm. Hỏi chatbot...':'Destination not found. Asking chatbot...'}</small>`);
+      // Fallback to chat
+      fetch('/api/chat/stream', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({message:`Tôi muốn đến ${rawDest}. Chỉ đường cụ thể từ chỗ tôi đang đứng.`, history:CHAT_HISTORY.slice(-6)})
+      })
+      .then(r=>{
+        const reader = r.body.getReader();
+        const decoder = new TextDecoder();
+        const box = document.getElementById('chatMessages');
+        const div = document.createElement('div');
+        div.className = 'chat-bubble bot';
+        div.textContent = '';
+        box.appendChild(div);
+        box.scrollTop = box.scrollHeight;
+        let buf = '';
+        function readChunk(){
+          reader.read().then(({done,value})=>{
+            if(done){ setTyping(false); return; }
+            buf += decoder.decode(value, {stream:true});
+            let nl;
+            while((nl=buf.indexOf('\n'))>=0){
+              const line = buf.slice(0,nl).trim();
+              buf = buf.slice(nl+1);
+              if(!line) continue;
+              try{
+                const parsed = JSON.parse(line);
+                if(parsed.token){ div.textContent += parsed.token; box.scrollTop = box.scrollHeight; }
+              }catch(e){}
+            }
+            readChunk();
+          });
+        }
+        readChunk();
+      });
+    } else if(data.error){
+      addBotMessage(data.error);
+      setTyping(false);
+    } else {
+      addBotMessage(data.formatted || "Here are your directions:", [
+        {text: T('openGoogleMaps'), fn: ()=> window.open(data.google_maps_url, '_blank')}
+      ]);
+      if(data.directions && data.directions.steps){
+        const steps = data.directions.steps.map((s,i)=>`${i+1}. ${s.instruction} — ${s.distance_text}`).join('<br>');
+        addBotMessage(`<b>${T('navTo')} ${rawDest}</b><br><small>${steps}</small>`);
+      }
+      setTyping(false);
+    }
+  })
+  .catch(e=>{
+    addBotMessage(LANG==='vi'?"Lỗi chỉ đường. Thử lại sau.":"Navigation error. Try again later.");
+    setTyping(false);
+  });
+}
+
+function quickNavigate(rawDest){
+  const dest = normalizeDest(rawDest);
+  addUserMessage(`${T('navTo')} ${rawDest}`);
+
+  // If GPS missing, fall back to chat
+  if(!GPS_LAT || !GPS_LON){
+    setTyping(true);
+    fetch('/api/chat/stream', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({message:`Chỉ đường đến ${rawDest}. Tôi đang ở gần trung tâm Anaheim.`, history:CHAT_HISTORY.slice(-6)})
+    })
+    .then(r=>{
+      const reader = r.body.getReader();
+      const decoder = new TextDecoder();
+      const box = document.getElementById('chatMessages');
+      const div = document.createElement('div');
+      div.className = 'chat-bubble bot';
+      div.textContent = '';
+      box.appendChild(div);
+      box.scrollTop = box.scrollHeight;
+      let buf = '';
+      function readChunk(){
+        reader.read().then(({done,value})=>{
+          if(done){ setTyping(false); return; }
+          buf += decoder.decode(value, {stream:true});
+          let nl;
+          while((nl=buf.indexOf('\n'))>=0){
+            const line = buf.slice(0, nl).trim();
+            buf = buf.slice(nl+1);
+            if(!line) continue;
+            try{
+              const parsed = JSON.parse(line);
+              if(parsed.token){ div.textContent += parsed.token; box.scrollTop = box.scrollHeight; }
+            }catch(e){}
+          }
+          readChunk();
+        });
+      }
+      readChunk();
+    })
+    .catch(e=>{
+      addBotMessage(LANG==='vi'?"Lỗi kết nối. Vui lòng thử lại.":"Connection error. Please try again.");
+      setTyping(false);
+    });
+    return;
+  }
+
+  setTyping(true);
+  fetch('/api/navigate', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({lat:GPS_LAT, lon:GPS_LON, destination:dest, lang:LANG})
+  })
+  .then(r=>r.json())
+  .then(data=>{
+    if(data.error && data.error.indexOf('Could not find destination')>=0){
+      addBotMessage(`<b>${T('navTo')} ${rawDest}</b><br><small>${LANG==='vi'?'Không tìm thấy địa điểm. Hỏi chatbot...':'Destination not found. Asking chatbot...'}</small>`);
+      fetch('/api/chat/stream', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({message:`Tôi muốn đến ${rawDest}. Chỉ đường cụ thể từ chỗ tôi đang đứng.`, history:CHAT_HISTORY.slice(-6)})
+      })
+      .then(r=>{
+        const reader = r.body.getReader();
+        const decoder = new TextDecoder();
+        const box = document.getElementById('chatMessages');
+        const div = document.createElement('div');
+        div.className = 'chat-bubble bot';
+        div.textContent = '';
+        box.appendChild(div);
+        box.scrollTop = box.scrollHeight;
+        let buf = '';
+        function readChunk(){
+          reader.read().then(({done,value})=>{
+            if(done){ setTyping(false); return; }
+            buf += decoder.decode(value, {stream:true});
+            let nl;
+            while((nl=buf.indexOf('\n'))>=0){
+              const line = buf.slice(0,nl).trim();
+              buf = buf.slice(nl+1);
+              if(!line) continue;
+              try{
+                const parsed = JSON.parse(line);
+                if(parsed.token){ div.textContent += parsed.token; box.scrollTop = box.scrollHeight; }
+              }catch(e){}
+            }
+            readChunk();
+          });
+        }
+        readChunk();
+      });
+    } else if(data.error){
+      addBotMessage(data.error);
+      setTyping(false);
+    } else {
+      addBotMessage(data.formatted || `${T('navTo')} ${rawDest}`, [
+        {text: T('openGoogleMaps'), fn: ()=> window.open(data.google_maps_url, '_blank')}
+      ]);
+      if(data.directions && data.directions.steps){
+        const steps = data.directions.steps.map((s,i)=>`${i+1}. ${s.instruction} — ${s.distance_text}`).join('<br>');
+        addBotMessage(`<b>${T('navTo')} ${rawDest}</b><br><small>${steps}</small>`);
+      }
+      setTyping(false);
+    }
+  })
+  .catch(e=>{
+    addBotMessage(LANG==='vi'?"Lỗi chỉ đường.":"Navigation error.");
+    setTyping(false);
+  });
+}
+
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/static/sw.js').catch(console.error);
+}
+loadAll();
+</script>
+</body>
+</html>
