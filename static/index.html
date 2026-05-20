@@ -234,7 +234,11 @@ const UI = {
     chatSend: "Send", chatLost: "I'm lost", chatHotel: "Hotel", chatFood: "Food near me",
     chatAirport: "To airport", chatVenue: "To venue", chatEmergency: "Emergency",
     gpsAcquiring: "Acquiring GPS...", gpsReady: "GPS ready", gpsError: "GPS unavailable",
-    typing: "Typing...", navTo: "Navigate to", openGoogleMaps: "Open Google Maps"
+    typing: "Typing...", navTo: "Navigate to", openGoogleMaps: "Open Google Maps",
+    transportFrom: "Transport from here", byTransit: "Transit (real-time)", toPlace: "To",
+    detail: "Detail", venuePlaces: "Venue", airportPlaces: "Airports", foodPlaces: "Food",
+    activityPlaces: "Activities", hotelPlaces: "Other hotels", emergencyPlaces: "Emergency",
+    pharmacyPlaces: "Pharmacy", noConnections: "No connections found."
   },
   vi: {
     loading: "Đang tải...", openMaps: "Mở trong Google Maps", getDirections: "Chỉ đường",
@@ -252,7 +256,11 @@ const UI = {
     chatSend: "Gửi", chatLost: "Tôi bị lạc", chatHotel: "Khách sạn", chatFood: "Ăn gần đây",
     chatAirport: "Ra sân bay", chatVenue: "Đến hội nghị", chatEmergency: "Khẩn cấp",
     gpsAcquiring: "Đang lấy GPS...", gpsReady: "GPS sẵn sàng", gpsError: "GPS không khả dụng",
-    typing: "Đang trả lời...", navTo: "Chỉ đường đến", openGoogleMaps: "Mở Google Maps"
+    typing: "Đang trả lời...", navTo: "Chỉ đường đến", openGoogleMaps: "Mở Google Maps",
+    transportFrom: "Phương tiện từ đây", byTransit: "Xe công cộng (thời gian thực)", toPlace: "Đến",
+    detail: "Chi tiết", venuePlaces: "Hội nghị", airportPlaces: "Sân bay", foodPlaces: "Ăn uống",
+    activityPlaces: "Vui chơi", hotelPlaces: "Khách sạn khác", emergencyPlaces: "Khẩn cấp",
+    pharmacyPlaces: "Nhà thuốc", noConnections: "Không tìm thấy kết nối."
   }
 };
 
@@ -381,13 +389,20 @@ function renderGuide(){
   html += '</div>';
 
   html += `<div class="card"><h2>${T('whereToStay')}</h2>`;
-  h.forEach(hotel=>{
+  h.forEach((hotel, idx)=>{
+    const hKey = hotel.name.en.toLowerCase().trim();
     html += `
-      <div class="list-item">
+      <div class="list-item" data-hotel-key="${hKey}">
         <h4>${T(hotel.name)}</h4>
         <p>${T(hotel.distance)} &middot; ${T(hotel.price)}</p>
         <p>${T(hotel.why)}</p>
         <a class="btn btn-sm btn-primary" href="${linkMap(hotel.address)}" target="_blank">${T('viewMaps')}</a>
+        <button class="btn btn-sm btn-outline" onclick="toggleHotelTransit(this,'${hKey}')">
+          <span class="en-show">${UI.en.transportFrom}</span><span class="vi-show">${UI.vi.transportFrom}</span>
+        </button>
+        <div class="collapse-body" id="transit-${hKey}" style="margin-top:10px">
+          <div class="transit-loading" style="font-size:12px;color:var(--mute)"><span class="en-show">Loading transit...</span><span class="vi-show">Đang tải phương tiện...</span></div>
+        </div>
       </div>
     `;
   });
@@ -822,9 +837,9 @@ function handleLost(){
   })
   .then(r=>r.json())
   .then(data=>{
-    if(data.error && data.error.indexOf('Could not find destination')>=0){
-      addBotMessage(`<b>${T('navTo')} ${rawDest}</b><br><small>${LANG==='vi'?'Không tìm thấy địa điểm. Hỏi chatbot...':'Destination not found. Asking chatbot...'}</small>`);
-      // Fallback to chat
+    // Any error from /api/navigate → fallback to streaming chat so chatbot never hangs
+    if(data.error){
+      addBotMessage(`<b>${T('navTo')} ${rawDest}</b><br><small>${LANG==='vi'?'Không tìm thấy đường đi. Hỏi chatbot...':'No route found. Asking chatbot...'}</small>`);
       fetch('/api/chat/stream', {
         method:'POST',
         headers:{'Content-Type':'application/json'},
@@ -858,10 +873,11 @@ function handleLost(){
           });
         }
         readChunk();
+      })
+      .catch(e=>{
+        addBotMessage(LANG==='vi'?"Lỗi kết nối. Vui lòng thử lại.":"Connection error. Please try again.");
+        setTyping(false);
       });
-    } else if(data.error){
-      addBotMessage(data.error);
-      setTyping(false);
     } else {
       addBotMessage(data.formatted || "Here are your directions:", [
         {text: T('openGoogleMaps'), fn: ()=> window.open(data.google_maps_url, '_blank')}
@@ -935,8 +951,9 @@ function quickNavigate(rawDest){
   })
   .then(r=>r.json())
   .then(data=>{
-    if(data.error && data.error.indexOf('Could not find destination')>=0){
-      addBotMessage(`<b>${T('navTo')} ${rawDest}</b><br><small>${LANG==='vi'?'Không tìm thấy địa điểm. Hỏi chatbot...':'Destination not found. Asking chatbot...'}</small>`);
+    // Any error from /api/navigate → fallback to streaming chat so chatbot never hangs
+    if(data.error){
+      addBotMessage(`<b>${T('navTo')} ${rawDest}</b><br><small>${LANG==='vi'?'Không tìm thấy đường đi. Hỏi chatbot...':'No route found. Asking chatbot...'}</small>`);
       fetch('/api/chat/stream', {
         method:'POST',
         headers:{'Content-Type':'application/json'},
@@ -970,10 +987,11 @@ function quickNavigate(rawDest){
           });
         }
         readChunk();
+      })
+      .catch(e=>{
+        addBotMessage(LANG==='vi'?"Lỗi kết nối. Vui lòng thử lại.":"Connection error. Please try again.");
+        setTyping(false);
       });
-    } else if(data.error){
-      addBotMessage(data.error);
-      setTyping(false);
     } else {
       addBotMessage(data.formatted || `${T('navTo')} ${rawDest}`, [
         {text: T('openGoogleMaps'), fn: ()=> window.open(data.google_maps_url, '_blank')}
@@ -989,6 +1007,67 @@ function quickNavigate(rawDest){
     addBotMessage(LANG==='vi'?"Lỗi chỉ đường.":"Navigation error.");
     setTyping(false);
   });
+}
+
+function toggleHotelTransit(btn, hKey){
+  const body = document.getElementById('transit-' + hKey);
+  const open = body.classList.toggle('open');
+  if(open && body.getAttribute('data-loaded') !== '1'){
+    body.setAttribute('data-loaded','1');
+    loadHotelTransit(hKey, body);
+  }
+}
+
+function escapeHtml(str){
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function categoryLabel(cat){
+  const map = {
+    venue:'venuePlaces', airport:'airportPlaces', food:'foodPlaces',
+    activity:'activityPlaces', hotel:'hotelPlaces', emergency:'emergencyPlaces', pharmacy:'pharmacyPlaces'
+  };
+  return T(map[cat] || 'detail');
+}
+
+async function loadHotelTransit(hKey, container){
+  try{
+    const r = await fetch('/api/connections?hotel=' + encodeURIComponent(hKey));
+    const data = await r.json();
+    const items = data.connections || [];
+    if(!items.length){
+      container.innerHTML = '<p style="font-size:12px;color:var(--mute)">'+T('noConnections')+'</p>';
+      return;
+    }
+    // Group by category
+    const groups = {};
+    items.forEach(item=>{
+      const c = item.category;
+      if(!groups[c]) groups[c] = [];
+      groups[c].push(item);
+    });
+    const order = ['venue','airport','food','activity','hotel','emergency','pharmacy'];
+    let htmlOut = '';
+    order.forEach(cat=>{
+      if(!groups[cat]) return;
+      const catName = categoryLabel(cat);
+      htmlOut += '<div style="margin-bottom:10px"><h4 style="font-size:12px;color:var(--accent);margin:6px 0 4px">'+escapeHtml(catName)+'</h4>';
+      groups[cat].forEach(item=>{
+        const name = typeof item.place_name==='object' ? T(item.place_name) : escapeHtml(item.place_name);
+        const note = typeof item.transit_note==='object' ? T(item.transit_note) : escapeHtml(item.transit_note);
+        htmlOut += '<div style="font-size:12px;color:var(--text);margin-bottom:6px;padding:6px;background:var(--card);border-radius:8px;border:1px solid var(--border)">'
+          + '<div style="font-weight:600">'+escapeHtml(name)+'</div>'
+          + '<div style="color:var(--mute);margin:2px 0">'+escapeHtml(note)+'</div>'
+          + '<a class="btn btn-sm btn-primary" style="margin-top:4px" href="'+escapeHtml(item.google_maps_transit_url)+'" target="_blank">'
+          + '<span class="en-show">'+UI.en.byTransit+'</span><span class="vi-show">'+UI.vi.byTransit+'</span></a>'
+          + '</div>';
+      });
+      htmlOut += '</div>';
+    });
+    container.innerHTML = htmlOut;
+  }catch(e){
+    container.innerHTML = '<p style="font-size:12px;color:var(--danger)">'+escapeHtml(LANG==='vi'?'Lỗi tải phương tiện.':'Transit load error.')+'</p>';
+  }
 }
 
 if('serviceWorker' in navigator){

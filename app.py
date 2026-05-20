@@ -330,6 +330,90 @@ ACTIVITIES = [
     }
 ]
 
+
+PLACES = [
+    {"id": "convention_center", "name": b("Anaheim Convention Center", "Trung tâm Hội nghị Anaheim"),
+     "address": "800 W Katella Ave, Anaheim, CA 92802",
+     "category": "venue", "transit_note": b("Walk if within 0.5 mi; ART bus line 15, 16.", "Đi bộ nếu <800 m; xe bus ART 15, 16.")},
+    {"id": "sna", "name": b("John Wayne Airport (SNA)", "Sân bay John Wayne (SNA)"),
+     "address": "18601 Airport Way, Santa Ana, CA 92707",
+     "category": "airport", "transit_note": b("Uber/Lyft $35–45 (20 min). OCTA bus 76+change ~1.5h.", "Uber/Lyft $35–45 (20 phút). Xe bus OCTA 76+chuyển ~1.5 giờ.")},
+    {"id": "lax", "name": b("Los Angeles International Airport (LAX)", "Sân bay Quốc tế Los Angeles (LAX)"),
+     "address": "1 World Way, Los Angeles, CA 90045",
+     "category": "airport", "transit_note": b("FlyAway + Metrolink ~2.5h total. Uber/Lyft $70–90 (50–70 min).", "FlyAway + Metrolink ~2.5 giờ. Uber/Lyft $70–90 (50–70 phút).")},
+    {"id": "disneyland", "name": b("Disneyland Park", "Công viên Disneyland"),
+     "address": "1313 Disneyland Dr, Anaheim, CA 92802",
+     "category": "activity", "transit_note": b("ART bus line 15 (10 min). Walk 0.5–1.0 mi from nearby hotels.", "Xe bus ART 15 (10 phút). Đi bộ 0.8–1.6 km từ khách sạn gần.")},
+    {"id": "downtown_disney", "name": b("Downtown Disney District", "Khu Downtown Disney"),
+     "address": "1585 Disneyland Dr, Anaheim, CA 92802",
+     "category": "activity", "transit_note": b("ART bus or walk 0.6 mi from Hilton/Marriott.", "Xe ART hoặc đi bộ 1 km từ Hilton/Marriott.")},
+    {"id": "packing_district", "name": b("Anaheim Packing District", "Khu Ẩm thực Anaheim Packing District"),
+     "address": "440 S Anaheim Blvd, Anaheim, CA 92805",
+     "category": "food", "transit_note": b("ART bus or Uber $8–12 (5–7 min).", "Xe ART hoặc Uber $8–12 (5–7 phút).")},
+    {"id": "pho79", "name": b("Pho 79", "Phở 79"),
+     "address": "9941 Hazard Ave, Garden Grove, CA 92844",
+     "category": "food", "transit_note": b("Uber $12–15 (10–12 min). OCTA bus 25 + walk.", "Uber $12–15 (10–12 phút). Xe bus OCTA 25 + đi bộ.")},
+    {"id": "newport_beach", "name": b("Newport Beach", "Bãi biển Newport"),
+     "address": "Newport Beach, CA 92663",
+     "category": "activity", "transit_note": b("OCTA bus 1 or 47 (~45 min). Uber $25–35 (20 min).", "Xe bus OCTA 1 hoặc 47 (~45 phút). Uber $25–35 (20 phút).")},
+    {"id": "little_saigon", "name": b("Little Saigon (Westminster)", "Little Saigon (Westminster)"),
+     "address": "Bolsa Ave, Westminster, CA 92683",
+     "category": "food", "transit_note": b("OCTA bus 25 or 54 (~30 min). Uber $15–20 (15 min).", "Xe bus OCTA 25 hoặc 54 (~30 phút). Uber $15–20 (15 phút).")},
+    {"id": "st_joseph", "name": b("St. Joseph Hospital", "Bệnh viện St. Joseph"),
+     "address": "1100 W Stewart Dr, Orange, CA 92868",
+     "category": "emergency", "transit_note": b("Uber $12–18 (10–15 min). OCTA bus 57.", "Uber $12–18 (10–15 phút). Xe bus OCTA 57.")},
+    {"id": "uc_irvine", "name": b("UC Irvine Medical Center", "Trung tâm Y tế UC Irvine"),
+     "address": "101 The City Dr S, Orange, CA 92868",
+     "category": "emergency", "transit_note": b("Uber $14–20 (12–18 min). OCTA bus 57 + 79.", "Uber $14–20 (12–18 phút). Xe bus OCTA 57 + 79.")},
+    {"id": "cvs", "name": b("CVS Pharmacy (24h)", "Nhà thuốc CVS (24 giờ)"),
+     "address": "1120 W Katella Ave, Orange, CA 92867",
+     "category": "pharmacy", "transit_note": b("Walk if near Katella Ave; otherwise ART bus.", "Đi bộ nếu gần Katella Ave; không thì xe ART.")},
+    {"id": "hilton", "name": b("Hilton Anaheim", "Khách sạn Hilton Anaheim"),
+     "address": "777 Convention Way, Anaheim, CA 92802",
+     "category": "hotel", "transit_note": b("Next to convention center.", "Sát bên trung tâm hội nghị.")},
+    {"id": "marriott", "name": b("Anaheim Marriott", "Khách sạn Anaheim Marriott"),
+     "address": "700 W Convention Way, Anaheim, CA 92802",
+     "category": "hotel", "transit_note": b("Connected via pedestrian bridge.", "Nối bằng cầu đi bộ.")},
+    {"id": "courtyard", "name": b("Courtyard by Marriott", "Courtyard by Marriott"),
+     "address": "2045 S Harbor Blvd, Anaheim, CA 92802",
+     "category": "hotel", "transit_note": b("ART bus or Uber $6–8 to venue.", "Xe ART hoặc Uber $6–8 đến hội nghị.")},
+    {"id": "bestwestern", "name": b("Best Western Plus Anaheim Inn", "Best Western Plus Anaheim Inn"),
+     "address": "1630 S Harbor Blvd, Anaheim, CA 92802",
+     "category": "hotel", "transit_note": b("ART bus line 15 or walk 20 min.", "Xe bus ART 15 hoặc đi bộ 20 phút.")},
+]
+
+# Map hotel ID to the corresponding place ID
+HOTEL_PLACE_MAP = {
+    "hilton anaheim": "hilton",
+    "anaheim marriott": "marriott",
+    "courtyard by marriott": "courtyard",
+    "best western plus anaheim inn": "bestwestern",
+}
+
+def hotel_connections(hotel_name):
+    hotel_key = hotel_name.lower().strip()
+    place_id = HOTEL_PLACE_MAP.get(hotel_key)
+    if not place_id:
+        return []
+    hotel_addr = next((p for p in PLACES if p["id"] == place_id), None)
+    if not hotel_addr:
+        return []
+    results = []
+    for place in PLACES:
+        if place["id"] == place_id:
+            continue
+        # Build Google Maps transit directions link
+        gmaps = f"https://www.google.com/maps/dir/?api=1&origin={hotel_addr['address']}&destination={place['address']}&travelmode=transit"
+        results.append({
+            "place_id": place["id"],
+            "place_name": place["name"],
+            "category": place["category"],
+            "address": place["address"],
+            "transit_note": place["transit_note"],
+            "google_maps_transit_url": gmaps,
+        })
+    return results
+
 DAILY_PLAN = [
     {
         "day": b("Day 0 — Sat Jul 25", "Ngày 0 — Thứ 7, 25/7"),
@@ -589,6 +673,23 @@ def osrm_route(start_lat, start_lon, end_lat, end_lon):
     except Exception as e:
         return {"error": str(e)}
 
+
+import math
+
+def haversine(lat1, lon1, lat2, lon2):
+    R = 6371.0
+    phi1 = math.radians(lat1)
+    phi2 = math.radians(lat2)
+    dphi = math.radians(lat2 - lat1)
+    dlambda = math.radians(lon2 - lon1)
+    a = math.sin(dphi / 2)**2 + math.cos(phi1) * math.cos(phi2) * math.sin(dlambda / 2)**2
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    return R * c
+
+# Anaheim Convention Center approximate center
+ANAHEIM_LAT, ANAHEIM_LON = 33.8003, -117.9216
+MAX_ROUTE_KM = 300  # reject if start is >300 km from Anaheim (prevents cross-continent routing)
+
 # ---------- ROUTES ----------
 
 @app.route('/')
@@ -656,6 +757,14 @@ def api_navigate():
     if not destination:
         return jsonify({"error": "Missing destination."}), 400
 
+    # Distance guard: do not route if user is nowhere near Anaheim (e.g. overseas)
+    try:
+        dist_km = haversine(float(start_lat), float(start_lon), ANAHEIM_LAT, ANAHEIM_LON)
+        if dist_km > MAX_ROUTE_KM:
+            return jsonify({"error": f"GPS position is too far from Anaheim ({dist_km:.0f} km). Turn-by-turn navigation only works when you are in the Anaheim area."}), 400
+    except Exception:
+        pass
+
     end = geocode_destination(destination)
     if not end:
         return jsonify({"error": f"Could not find destination: {destination}"}), 400
@@ -695,7 +804,7 @@ def api_chat_stream():
     
     def generate():
         if not OLLAMA_API_KEY:
-            yield json.dumps({"error": "Chatbot is offline (no API key configured)."}) + "\\n"
+            yield json.dumps({"error": "Chatbot is offline (no API key configured)."}) + "\n"
             return
         
         messages = [{"role": "system", "content": APP_CONTEXT}]
@@ -731,6 +840,12 @@ def api_chat_stream():
             yield json.dumps({"error": str(e)}) + "\n"
     
     return Response(generate(), mimetype='application/x-ndjson')
+
+@app.route('/api/connections')
+def api_connections():
+    hotel = request.args.get("hotel", "").lower().strip()
+    data = hotel_connections(hotel)
+    return jsonify({"hotel": hotel, "connections": data})
 
 @app.route('/health')
 def health():
